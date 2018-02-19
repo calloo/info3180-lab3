@@ -5,7 +5,7 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 
-from app import app
+from app import app, forms
 from flask import render_template, request, redirect, url_for, flash
 
 
@@ -19,9 +19,14 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/contact')
+@app.route('/contact', methods=('GET', 'POST'))
 def contact():
-    return render_template("contact.html")
+    form = forms.Form()
+    if form.validate_on_submit():
+        return redirect('/about')
+    elif request.method == 'POST':
+        return render_template("contact.html", form=form, invalid=True)
+    return render_template("contact.html", form=form, invalid=False)
 
 
 @app.route('/about/')

@@ -1,10 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import DataRequired
+from wtforms import StringField, TextAreaField
+from wtforms.validators import DataRequired, Email
 
 
 class Form(FlaskForm):
-    name = StringField('name', validators=[DataRequired])
-    email = StringField('email', validators=[DataRequired])
-    subject = StringField('subject', validators=[DataRequired])
-    message = StringField('message', validators=[DataRequired])
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('E-mail', validators=[DataRequired()])
+    subject = StringField('Subject', validators=[DataRequired(), Email("Error")])
+    message = TextAreaField('Message', validators=[DataRequired()])
