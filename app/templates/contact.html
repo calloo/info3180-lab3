@@ -16,7 +16,7 @@
     <p>Please enter your fullname</p>
     {{ form.name(size=20) }} <br><br>
 
-    {% if invalid and not form.email.data %}
+    {% if invalid and (not form.email.data or form.email.) %}
         <label><strong>E-mail <span style="color:red;">(Required)</span></strong></label><br>
     {% else %}
         <label><strong>E-mail</strong></label><br>
