@@ -6,5 +6,5 @@ from wtforms.validators import DataRequired, Email
 class Form(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired()])
-    subject = StringField('Subject', validators=[DataRequired(), Email("Error")])
+    subject = StringField('Subject', validators=[DataRequired()])
     message = TextAreaField('Message', validators=[DataRequired()])

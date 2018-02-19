@@ -7,6 +7,8 @@ This file creates your application.
 
 from app import app, forms
 from flask import render_template, request, redirect, url_for, flash
+from app import mail
+from flask_mail import Message
 
 
 ###
@@ -16,14 +18,23 @@ from flask import render_template, request, redirect, url_for, flash
 @app.route('/')
 def home():
     """Render website's home page."""
-    return render_template('home.html')
+
+    if request.args.get('mailed', None):
+        return render_template('home.html', mail=True)
+    return render_template('home.html', mail=False)
 
 
 @app.route('/contact', methods=('GET', 'POST'))
 def contact():
     form = forms.Form()
-    if form.validate_on_submit():
-        return redirect('/about')
+    if form.validate_on_submit() and  request.method == 'POST':
+        msg = Message(form.subject.data, sender=(form.name.data, form.email.data), recipients=[
+            "e813b93e44-fd0fa8@inbox.mailtrap.io"
+        ])
+        msg.body=form.message.data
+        mail.send(msg)
+        return redirect(url_for('home', mailed=True))
+        
     elif request.method == 'POST':
         return render_template("contact.html", form=form, invalid=True)
     return render_template("contact.html", form=form, invalid=False)
